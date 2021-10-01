@@ -28,7 +28,7 @@ AppModule = __decorate([
     common_1.Module({
         imports: [
             serve_static_1.ServeStaticModule.forRoot({
-                rootPath: '../client',
+                rootPath: './client',
             }),
             typeorm_1.TypeOrmModule.forRoot(),
             accounts_module_1.AccountsModule,
