@@ -6,6 +6,6 @@
         "rejectUnauthorized": false
       }
     },
-  "entities": ["dist/**/*.entity{.ts,.js}"],
+  "entities": ["**/*.entity{.ts,.js}"],
   "synchronize": false
 }
