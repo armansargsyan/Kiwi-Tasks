@@ -7,5 +7,5 @@
       }
     },
   "entities": ["/**/*.entity{.ts,.js}"],
-  "synchronize": false
+  "synchronize": true
 }
