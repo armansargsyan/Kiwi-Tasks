@@ -1,6 +1,9 @@
 {
   "type": "postgres",
   "url": "postgres://fslrzisnztgqyt:c7c83308b4a3848f87a5d28c3ac4d10eeafcc25cd1c6099a7d3450f0113256f8@ec2-34-194-123-31.compute-1.amazonaws.com:5432/deejblnaqv5pjf",
+  "extra": {
+      "ssl": true,
+    },
   "entities": ["/**/*.entity{.ts,.js}"],
   "synchronize": false
 }
