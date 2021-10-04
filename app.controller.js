@@ -20,7 +20,10 @@ let AppController = class AppController {
         this.appService = appService;
     }
     get(res, next, req) {
-        res.sendFile('./client/index.html');
+        if (req.path.includes('graphql')) {
+            return next();
+        }
+        res.sendFile(`${process.cwd()}/client/index.html`);
     }
 };
 __decorate([
