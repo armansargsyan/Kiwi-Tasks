@@ -18,7 +18,6 @@ const jwt_auth_service_1 = require("./jwt-auth/jwt-auth.service");
 const jwt_1 = require("@nestjs/jwt");
 const binance_module_1 = require("./binance/binance.module");
 const ws_gateway_1 = require("./ws.gateway");
-const serve_static_1 = require("@nestjs/serve-static");
 const ws_assets_gateway_1 = require("./ws-assets.gateway");
 const ws_rooms_gateway_1 = require("./ws-rooms.gateway");
 let AppModule = class AppModule {
@@ -27,9 +26,6 @@ AppModule = __decorate([
     common_1.Global(),
     common_1.Module({
         imports: [
-            serve_static_1.ServeStaticModule.forRoot({
-                rootPath: './client',
-            }),
             typeorm_1.TypeOrmModule.forRoot(),
             accounts_module_1.AccountsModule,
             jwt_1.JwtModule.register({
