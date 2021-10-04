@@ -16,19 +16,10 @@ let BinanceController = class BinanceController {
     constructor(binanceService) {
         this.binanceService = binanceService;
     }
-    async getUserData() {
-        return await this.binanceService.getUserData();
-    }
     async getAssetData() {
         return await this.binanceService.getAssetData();
     }
 };
-__decorate([
-    common_1.Get(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], BinanceController.prototype, "getUserData", null);
 __decorate([
     common_1.Get('assets'),
     __metadata("design:type", Function),

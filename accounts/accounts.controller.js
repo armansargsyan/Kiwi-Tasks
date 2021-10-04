@@ -23,46 +23,16 @@ let AccountsController = class AccountsController {
         this.accountService = accountService;
     }
     async logIn(userDto) {
-        try {
-            return await this.accountService.logIn(userDto);
-        }
-        catch (error) {
-            console.log('Error: ', error.message, 'Code: ', error.status);
-            throw error;
-        }
+        return await this.accountService.logIn(userDto);
     }
     async validToken(access_token) {
-        try {
-            return await this.accountService.validToken(access_token);
-        }
-        catch (error) {
-            console.log('Error: ', error.message, 'Code: ', error.status);
-            throw error;
-        }
+        return await this.accountService.validToken(access_token);
     }
     async signUp(userDto) {
-        try {
-            return await this.accountService.create(userDto);
-        }
-        catch (error) {
-            console.log('Error: ', error.message, 'Code: ', error.code);
-            if (error.errno === 1062) {
-                throw new common_1.HttpException(error.message, common_1.HttpStatus.CONFLICT);
-            }
-            throw new common_1.HttpException({
-                status: common_1.HttpStatus.INTERNAL_SERVER_ERROR,
-                message: error.message,
-            }, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return await this.accountService.create(userDto);
     }
     async verification(verificationDto, accessToken) {
-        try {
-            return await this.accountService.verification(verificationDto, accessToken);
-        }
-        catch (error) {
-            console.log('Error: ', error.message, 'Code: ', error.status);
-            throw error;
-        }
+        return await this.accountService.verification(verificationDto, accessToken);
     }
 };
 __decorate([

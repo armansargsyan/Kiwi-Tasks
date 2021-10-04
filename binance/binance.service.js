@@ -21,19 +21,20 @@ let BinanceService = class BinanceService {
         this.client = await this.binanceProvider.getClient('muLSdXnYSGnIA4Ghk7mrFBc4ZNvKwPCJ2SwL9eQAtBEhtDHR8acbj9tDvynmNrAM', 'QHUn7ItVOGM8Z8cNixDtdW4m1YaMoAtvFqMtHXBjGt0kpGjXrYN5zf05KlEvj6cs');
         return this.client;
     }
-    async getUserData() {
-        let data;
-        await this.client.accountSnapshot('SPOT').then((res) => {
-            data = res.data;
-        });
-        return data;
-    }
     async getAssetData() {
-        let data;
-        await this.client.prevDay().then((res) => {
-            data = res;
-        });
-        return data;
+        try {
+            let data;
+            await this.client.prevDay().then((res) => {
+                data = res;
+            });
+            return data;
+        }
+        catch (e) {
+            throw new common_1.HttpException({
+                status: common_1.HttpStatus.INTERNAL_SERVER_ERROR,
+                message: 'Server Error',
+            }, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     async subscribeStream(cb) {
         this.subscribe = await this.client.futuresTickerStream(cb);

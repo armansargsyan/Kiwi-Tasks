@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.WsRoomsGateway = void 0;
 const websockets_1 = require("@nestjs/websockets");
 let WsRoomsGateway = class WsRoomsGateway {
-    handleConnection(client, ...args) {
+    handleConnection(client) {
         console.log(`${client.id} has been connected to Rooms`);
     }
     handleDisconnect(client) {

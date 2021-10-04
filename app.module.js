@@ -28,7 +28,7 @@ AppModule = __decorate([
     common_1.Module({
         imports: [
             serve_static_1.ServeStaticModule.forRoot({
-                rootPath: './client',
+                rootPath: '/home/pc/Desktop/Arman Sargsyan/NestJs/first-porject/client',
             }),
             typeorm_1.TypeOrmModule.forRoot(),
             accounts_module_1.AccountsModule,
@@ -37,7 +37,7 @@ AppModule = __decorate([
             }),
             nestjs_twilio_1.TwilioModule.forRoot({
                 accountSid: 'ACe0f0688c733e77fca00c6afb99ac724e',
-                authToken: '110bc3868bd44f6148367cb41460c456',
+                authToken: 'f71d01cc76d909bb2dcac6bef233380a',
             }),
             todo_module_1.TodoModule,
             binance_module_1.BinanceModule,

@@ -37,10 +37,10 @@ let TodoService = class TodoService {
         }
     }
     async create(todoDto, access_token) {
-        const body = this.jwtAuthService.validate(access_token);
-        todoDto.UserId = body.id;
-        const toDo = this.manager.create(todo_entity_1.ToDo, todoDto);
         try {
+            const body = this.jwtAuthService.validate(access_token);
+            todoDto.UserId = body.id;
+            const toDo = this.manager.create(todo_entity_1.ToDo, todoDto);
             await toDo.save();
             return toDo;
         }

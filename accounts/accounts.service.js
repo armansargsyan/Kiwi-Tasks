@@ -49,55 +49,88 @@ let AccountsService = class AccountsService {
             });
         }
         catch (e) {
-            console.log('error', e);
+            if (e.code === 'ER_DUP_ENTRY') {
+                throw new common_1.HttpException({
+                    status: common_1.HttpStatus.CONFLICT,
+                    message: e.message,
+                }, common_1.HttpStatus.CONFLICT);
+            }
+            throw new common_1.HttpException({
+                status: common_1.HttpStatus.INTERNAL_SERVER_ERROR,
+                message: e.message,
+            }, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     async logIn(userDto) {
-        const foundUser = await account_entity_1.Account.findOne({ email: userDto.email });
-        if (!foundUser) {
-            throw new common_1.HttpException({
-                status: common_1.HttpStatus.BAD_REQUEST,
-                message: 'Wrong email or password',
-            }, common_1.HttpStatus.BAD_REQUEST);
+        try {
+            const foundUser = await account_entity_1.Account.findOne({ email: userDto.email });
+            if (!foundUser) {
+                throw common_1.HttpStatus.BAD_REQUEST;
+            }
+            const isMatch = await bcrypt.compare(userDto.password, foundUser.passwordHash);
+            if (!isMatch) {
+                throw common_1.HttpStatus.BAD_REQUEST;
+            }
+            else {
+                return this.jwtAuthService.sign({
+                    email: foundUser.email,
+                    id: foundUser.id,
+                });
+            }
         }
-        const isMatch = await bcrypt.compare(userDto.password, foundUser.passwordHash);
-        if (!isMatch) {
+        catch (e) {
+            if (e === common_1.HttpStatus.BAD_REQUEST) {
+                throw new common_1.HttpException({
+                    status: common_1.HttpStatus.BAD_REQUEST,
+                    message: 'Wrong email or password',
+                }, common_1.HttpStatus.BAD_REQUEST);
+            }
             throw new common_1.HttpException({
-                status: common_1.HttpStatus.BAD_REQUEST,
-                message: 'Wrong email or password',
-            }, common_1.HttpStatus.BAD_REQUEST);
-        }
-        else {
-            return this.jwtAuthService.sign({
-                email: foundUser.email,
-                id: foundUser.id,
-            });
+                status: common_1.HttpStatus.INTERNAL_SERVER_ERROR,
+                message: 'Server Error',
+            }, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     async validToken(access_token) {
-        const body = this.jwtAuthService.validate(access_token);
-        const foundUser = await account_entity_1.Account.findOne(body.id);
-        if (!foundUser || !body) {
-            return false;
+        try {
+            const body = this.jwtAuthService.validate(access_token);
+            const foundUser = await account_entity_1.Account.findOne(body.id);
+            return !(!foundUser || !body);
         }
-        return true;
+        catch (e) {
+            throw new common_1.HttpException({
+                status: common_1.HttpStatus.INTERNAL_SERVER_ERROR,
+                message: 'Server Error',
+            }, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     async verification(verificationDto, access_token) {
-        const body = this.jwtAuthService.validate(access_token);
-        const foundUser = await unverifiedAccount_entity_1.UnverifiedAccount.findOne({
-            email: body.email,
-            verificationCode: verificationDto.code,
-        });
-        if (!foundUser) {
-            throw new common_1.HttpException({
-                status: common_1.HttpStatus.BAD_REQUEST,
-                message: 'Verification failed',
-            }, common_1.HttpStatus.BAD_REQUEST);
+        try {
+            const body = this.jwtAuthService.validate(access_token);
+            const foundUser = await unverifiedAccount_entity_1.UnverifiedAccount.findOne({
+                email: body.email,
+                verificationCode: verificationDto.code,
+            });
+            if (!foundUser) {
+                throw common_1.HttpStatus.BAD_REQUEST;
+            }
+            const account = this.manager.create(account_entity_1.Account, foundUser);
+            await account.save();
+            await this.manager.delete(unverifiedAccount_entity_1.UnverifiedAccount, foundUser.id);
+            return this.jwtAuthService.sign({ email: account.email, id: account.id });
         }
-        const account = this.manager.create(account_entity_1.Account, foundUser);
-        await account.save();
-        await this.manager.delete(unverifiedAccount_entity_1.UnverifiedAccount, foundUser.id);
-        return this.jwtAuthService.sign({ email: account.email, id: account.id });
+        catch (e) {
+            if (e === common_1.HttpStatus.BAD_REQUEST) {
+                throw new common_1.HttpException({
+                    status: common_1.HttpStatus.BAD_REQUEST,
+                    message: 'Verification failed',
+                }, common_1.HttpStatus.BAD_REQUEST);
+            }
+            throw new common_1.HttpException({
+                status: common_1.HttpStatus.INTERNAL_SERVER_ERROR,
+                message: 'Server Error',
+            }, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     async sendSMS(phoneNumber, code) {
         try {
@@ -108,7 +141,10 @@ let AccountsService = class AccountsService {
             });
         }
         catch (e) {
-            return e;
+            throw new common_1.HttpException({
+                status: common_1.HttpStatus.INTERNAL_SERVER_ERROR,
+                message: 'Server Error',
+            }, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 };

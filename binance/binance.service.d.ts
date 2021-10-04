@@ -5,7 +5,6 @@ export declare class BinanceService {
     subscribe: any;
     constructor(binanceProvider: BinanceProvider);
     getClient(): Promise<any>;
-    getUserData(): Promise<any>;
     getAssetData(): Promise<any>;
     subscribeStream(cb: any): Promise<any>;
     unsubscribeStream(): void;

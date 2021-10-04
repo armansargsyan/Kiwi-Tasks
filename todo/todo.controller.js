@@ -22,40 +22,16 @@ let TodoController = class TodoController {
         this.todoService = todoService;
     }
     async getUserTodos(access_token) {
-        try {
-            return await this.todoService.getUserTodos(access_token);
-        }
-        catch (error) {
-            console.log('Error: ', error.message, 'Code: ', error.status);
-            throw error;
-        }
+        return await this.todoService.getUserTodos(access_token);
     }
     async create(todoDto, access_token) {
-        try {
-            return await this.todoService.create(todoDto, access_token);
-        }
-        catch (error) {
-            console.log('Error: ', error.message, 'Code: ', error.status);
-            throw error;
-        }
+        return await this.todoService.create(todoDto, access_token);
     }
     async update(todoDto) {
-        try {
-            return await this.todoService.update(todoDto);
-        }
-        catch (error) {
-            console.log('Error: ', error.message, 'Code: ', error.status);
-            throw error;
-        }
+        return await this.todoService.update(todoDto);
     }
     async remove(id) {
-        try {
-            return await this.todoService.delete(+id);
-        }
-        catch (error) {
-            console.log('Error: ', error.message, 'Code: ', error.status);
-            throw error;
-        }
+        return await this.todoService.delete(+id);
     }
 };
 __decorate([

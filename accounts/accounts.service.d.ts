@@ -18,5 +18,5 @@ export declare class AccountsService {
     logIn(userDto: UserDto): Promise<AccessTokenDto>;
     validToken(access_token: string): Promise<boolean>;
     verification(verificationDto: VerificationDto, access_token: string): Promise<AccessTokenDto>;
-    sendSMS(phoneNumber: any, code: any): Promise<any>;
+    sendSMS(phoneNumber: any, code: any): Promise<import("twilio/lib/rest/api/v2010/account/message").MessageInstance>;
 }
