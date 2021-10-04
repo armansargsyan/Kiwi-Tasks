@@ -19,12 +19,12 @@ let AppController = class AppController {
     constructor(appService) {
         this.appService = appService;
     }
-    get(res, next, req) {
-        if (req.path.includes('graphql')) {
-            return next();
-        }
-        res.sendFile('./client/index.html');
-    }
+//     get(res, next, req) {
+//         if (req.path.includes('graphql')) {
+//             return next();
+//         }
+//         res.sendFile('./client/index.html');
+//     }
 };
 __decorate([
     common_1.Get('*'),
